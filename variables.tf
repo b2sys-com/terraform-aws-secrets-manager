@@ -1,37 +1,44 @@
-variable "secret_manager_name" {
-  description = "Name of the Secrets to create in Secrets Manager"
+variable "recovery_window_in_days" {
+  description = "Specifies the number of days that AWS Secrets Manager waits before it can delete the secret. This value can be 0 to force deletion without recovery or range from 7 to 30 days."
+  type        = number
+  default     = 30
 }
 
-variable "secrets_manager_values" {
-  description = "Values to store in Secrets Manager in Json format"
-  type        = map(string)
-  default     = null
-}
-
-variable "secrets_manager_string" {
-  description = "Values to store in Secrets Manager in String format"
-  type        = string
-  default     = null
-}
-
-variable "master_key_spec" {
-  description = "Encryption algorithms"
-  default     = "SYMMETRIC_DEFAULT"
-}
-
-variable "secrets_tags" {
-  description = "Map of tags to be use in Secrets Manager resource creation"
+# Secrets
+variable "rotate_secrets" {
+  description = "Map of secrets to keep and rotate in AWS Secrets Manager"
+  type        = any
   default     = {}
 }
 
-variable "region_replication" {
-  description = "AWS Region to replicate Secrets"
-  default     = "us-west-2"
-  type        = string
+# Secrets
+variable "secrets" {
+  description = "Map of secrets to keep in AWS Secrets Manager"
+  type        = any
+  default     = {}
 }
 
-variable "replication" {
-  description = "Enable Replication"
-  default     = false
+variable "replica_regions" {
+  description = "Map of regions to replicate the secret as the key and related kms_key_id as the value"
+  type        = map(any)
+  default     = {}
+}
+
+variable "unmanaged" {
+  description = "Terraform must ignore secrets lifecycle. Using this option you can initialize the secrets and rotate them outside Terraform, thus, avoiding other users to change or rotate the secrets by subsequent runs of Terraform"
   type        = bool
+  default     = false
+}
+
+variable "automatically_after_days" {
+  description = "Specifies the number of days between automatic scheduled rotations of the secret."
+  type        = number
+  default     = 30
+}
+
+# Tags
+variable "tags" {
+  description = "Specifies a key-value map of user-defined tags that are attached to the secret."
+  type        = any
+  default     = {}
 }

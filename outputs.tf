@@ -1,14 +1,20 @@
-output "secrets_manager_arn" {
-  description = "Amazon Resource Name (ARN) of the secret"
-  value       = aws_secretsmanager_secret.secrets.arn
+output "secret_ids" {
+  description = "Secret ids map"
+  value       = { for k, v in aws_secretsmanager_secret.sm : k => v["id"] }
 }
 
-output "secrets_manager_kms_arn" {
-  description = "Amazon Resource Name (ARN) of the KMS"
-  value       = aws_kms_key.kms_key.arn
+output "secret_arns" {
+  description = "Secrets arns map"
+  value       = { for k, v in aws_secretsmanager_secret.sm : k => v["arn"] }
 }
 
-output "secrets_manager_name" {
-  description = "The resulting name of the secret"
-  value       = aws_secretsmanager_secret.secrets.name
+# Rotate secrets
+output "rotate_secret_ids" {
+  description = "Rotate secret ids map"
+  value       = { for k, v in aws_secretsmanager_secret.rsm : k => v["id"] }
+}
+
+output "rotate_secret_arns" {
+  description = "Rotate secret arns map"
+  value       = { for k, v in aws_secretsmanager_secret.rsm : k => v["arn"] }
 }
