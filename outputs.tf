@@ -18,3 +18,8 @@ output "rotate_secret_arns" {
   description = "Rotate secret arns map"
   value       = { for k, v in aws_secretsmanager_secret.rsm : k => v["arn"] }
 }
+
+output "arn" {
+  description = "AWS SecretManager Secret ARN"
+  value       = aws_secretsmanager_secret.secret.arn
+}
